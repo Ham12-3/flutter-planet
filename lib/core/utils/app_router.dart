@@ -10,11 +10,13 @@ import '../../presentation/pages/auth/signup_page.dart';
 import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/itinerary_creation_page.dart';
 import '../../presentation/pages/profile_page.dart';
+import '../../presentation/pages/main_navigation_page.dart';
 
 enum AppRoute {
   splash('/'),
   login('/login'),
   signup('/signup'),
+  main('/main'),
   home('/home'),
   chat('/chat'),
   itineraryCreation('/create-itinerary'),
@@ -45,6 +47,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SignUpPage(),
       ),
       GoRoute(
+        path: AppRoute.main.path,
+        name: 'main',
+        builder: (context, state) => const MainNavigationPage(),
+      ),
+      GoRoute(
         path: AppRoute.home.path,
         name: 'home',
         builder: (context, state) => const HomePage(),
@@ -54,7 +61,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'chat',
         builder: (context, state) {
           final itineraryId = state.uri.queryParameters['itineraryId'];
-          return ChatPage(existingItineraryId: itineraryId);
+          final tripVision = state.uri.queryParameters['tripVision'];
+          final existingItinerary = state.uri.queryParameters['existingItinerary'];
+          return ChatPage(
+            existingItineraryId: itineraryId,
+            tripVision: tripVision,
+            existingItinerary: existingItinerary,
+          );
         },
       ),
       GoRoute(
